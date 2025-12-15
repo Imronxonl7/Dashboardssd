@@ -1,16 +1,18 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const TeachersPage = () => {
   const [teachers, setTeachers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [search , setSearch] = useState("") 
 
-  useEffect(() => {
-    async function getAllTeachers() {
+
+  async function getAllTeachers() {
       try {
         let res = await axios.get(
-          "https://69243f273ad095fb84735a27.mockapi.io/teachers"
+          `https://69243f273ad095fb84735a27.mockapi.io/teachers?search=${search}`
         );
         setTeachers(res.data);
         setLoading(false);
@@ -18,20 +20,38 @@ const TeachersPage = () => {
         console.log(err);
       }
     }
+  useEffect(() => {  
     getAllTeachers();
-  }, []);
+  }, [search]);
 
+  async function deleteTeacher(id) {
+    try{
+      await axios.delete(`https://69243f273ad095fb84735a27.mockapi.io/teachers/${id}`)
+      getAllTeachers()
+      toast(`Siz ${id}-id li o'qituvchini o'chirdingiz`)
+    }catch(err){
+      console.log(err);
+      
+    }
+  }
   if (loading) {
     return (
       <div className="flex items-center justify-center flex-col h-screen">
-        <div className="text-red-600 relative w-[100px] h-[100px] border-[4px] border-red-600  font-bold rounded-[50px] flex items-center justify-center flex-col animate-spin ">
+        <div className="text-gray-800 relative w-[100px] h-[100px] border-[4px] border-gray-800  font-bold rounded-[50px] flex items-center justify-center flex-col animate-spin ">
           <span className="absolute w-[15px] h-[10px] bg-white top-[-4px]"></span>
         </div>
       </div>
     );
   }
   return (
-    <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+    <div className="">
+      <input
+      onChange={(e) => setSearch(e.target.value)}
+      className="outline-none p-2 text-[20px] font-medium mx-10 my-5 rounded-[20px] bg-gray-800 text-gray-400 " 
+      type="search" 
+      placeholder="O'qituvchilarni qidirish" />
+      <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      
       {teachers.map((el) => (
         <div key={el.id} className="text-card-foreground flex flex-col gap-6 rounded-xl border p-6 cursor-pointer transition-all duration-300 hover:shadow-xl hover:-translate-y-1 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 group">
           <div className="flex flex-col items-center text-center mb-4">
@@ -98,8 +118,7 @@ const TeachersPage = () => {
               </button>
 
               <button
-                data-action="delete"
-                data-id={el.id}
+              onClick={() => deleteTeacher(el.id)}
                 className="flex-1 flex items-center justify-center gap-2 h-10 rounded-md bg-red-100 hover:bg-red-200 text-red-600 dark:bg-red-900/40 dark:hover:bg-red-900/60 dark:text-red-300 text-sm font-medium transition"
               >
                 <svg
@@ -119,6 +138,7 @@ const TeachersPage = () => {
           </div>
         </div>
       ))}
+    </div>
     </div>
   );
 };
