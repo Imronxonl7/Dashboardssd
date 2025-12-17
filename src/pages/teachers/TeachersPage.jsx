@@ -7,7 +7,7 @@ const TeachersPage = () => {
   const [teachers, setTeachers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
-  const [isModalOpen , setIsModalOpen] = useState(true)
+  const [isModalOpen , setIsModalOpen] = useState(false)
   const [name , setName] = useState("")
   const [profession , setProfession] = useState("")
   const [linkedIn , setLinkedIn] = useState("")
@@ -381,18 +381,66 @@ const TeachersPage = () => {
 
             <div className="space-y-2 mb-4">
               <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400 text-sm">
+                <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-4 w-4 flex-shrink-0 text-blue-500"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"></path>
+              </svg>
                 <span className="truncate">{el.createdAt}</span>
               </div>
 
               <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400 text-sm">
+                <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-4 w-4 flex-shrink-0 text-green-500"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"></path>
+                <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+              </svg>
                 <span className="truncate">{el.gmail}</span>
               </div>
 
               <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400 text-sm">
-                <span className="truncate">@{el.science}</span>
+                <svg
+                className="h-4 w-4 flex-shrink-0 text-blue-400"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"></path>
+                <path d="m21.854 2.147-10.94 10.939"></path>
+              </svg>
+                <span className="truncate">t.me/{el.science}</span>
               </div>
 
               <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400 text-sm">
+                <svg
+                className="h-4 w-4 flex-shrink-0 text-blue-600"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                <rect width="4" height="12" x="2" y="9"></rect>
+                <circle cx="4" cy="4" r="2"></circle>
+              </svg>
                 <span className="truncate">linkedin.com/in/{el.linkedin}</span>
               </div>
 

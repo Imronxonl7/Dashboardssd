@@ -18,7 +18,7 @@ useEffect(() => {
 } , [id])
 
   return (
-    <div className='grid grid-cols-3'>
+    <div className='grid grid-cols-3 gap-10 ml-5'>
         <div className="student-card flex flex-col gap-6 rounded-xl border p-6 cursor-pointer transition-all duration-300 hover:shadow-xl hover:-translate-y-1 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 group">
           <div className="flex flex-col justify-between items-center text-center mb-4">
             <span className="relative flex size-10 shrink-0 overflow-hidden rounded-full h-20 w-20 mb-3 ring-4 ring-purple-100 dark:ring-purple-900">
@@ -178,7 +178,7 @@ useEffect(() => {
               Edit
             </button>
 
-            <button
+            {/* <button
               data-action="delete"
 
               className="flex-1 flex items-center justify-center gap-2 h-10 rounded-md bg-red-100 hover:bg-red-200 text-red-600 dark:bg-red-900/40 dark:hover:bg-red-900/60 dark:text-red-300 text-sm font-medium transition"
@@ -195,7 +195,7 @@ useEffect(() => {
                 <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
               </svg>
               Delete
-            </button>
+            </button> */}
           </div>
         </div>
     </div>

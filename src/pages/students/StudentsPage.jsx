@@ -7,6 +7,18 @@ const StudentsPage = () => {
   const [students, setStudents] = useState([]);
   const [loading , setLoading] = useState(true)
   const [search , setSearch] =useState("")
+  const [isModalOpen , setIsModalOpen] = useState(false)
+  const [name , setName] = useState("")
+  const [coin , setCoin] = useState("")
+  const [linkedIn , setLinkedIn] = useState("")
+  const [yahoo , setYahoo] = useState("")
+  const [age , setAge] = useState("")
+  const [grade , setGrade] = useState("")
+  const [avatar , setAvatar] = useState("")
+  const [telegram , setTelegram] = useState("")
+  const [rating , setRating] = useState("")
+  const [gender , setGender] = useState("")
+  const [selected , setSelected ] = useState(null)
 
 async function getAllStudents() {
       try {
@@ -22,6 +34,58 @@ async function getAllStudents() {
   useEffect(() => {
     getAllStudents();
   }, [search]);
+  async function addStudent(e) {
+
+    e.preventDefault()
+    try{
+      if(selected){      
+        await axios.put(`https://69243f273ad095fb84735a27.mockapi.io/students/${selected}` , {name , avatar , gender , age , grade , telegram , yahoo , linkedIn , rating , coin })
+      toast.success("Siz o'quvchini tahrirladingiz")
+
+      }else{
+        await axios.post("https://69243f273ad095fb84735a27.mockapi.io/students" , {name , avatar , gender , age , grade , telegram , yahoo , linkedIn , rating , coin })
+              toast.success("Siz o'quvchi qo'shdingiz")
+
+      }
+      setIsModalOpen(false)
+      getAllStudents()
+      setSelected(null)
+      setAge("")
+      setAvatar("")
+      setCoin("")
+      setGender("")
+      setYahoo("")
+      setLinkedIn("")
+      setName("")
+      setGrade("")
+      setRating("")
+      setTelegram("")
+      
+    }catch(err){
+      console.log(err);
+      
+    }
+  }
+  async function editStudent(id) {
+    setSelected(id)
+    setIsModalOpen(true)
+    try{
+       let res = await axios.get(`https://69243f273ad095fb84735a27.mockapi.io/students/${id}`)
+      setAge(res.data.age)
+      setAvatar(res.data.avatar)
+      setCoin(res.data.coin)
+      setGender(res.data.gender)
+      setYahoo(res.data.yahoo)
+      setLinkedIn(res.data.linkedin)
+      setName(res.data.name)
+      setGrade(res.data.grade)
+      setRating(res.data.rating)
+      setTelegram(res.data.telegram)
+    }catch(error){
+      console.log(error);
+      
+    }
+  }
   async function deleteStudent(id) {
   try{
     await axios.delete(`https://69243f273ad095fb84735a27.mockapi.io/students/${id}`)
@@ -31,6 +95,20 @@ async function getAllStudents() {
     console.log(err);
     
   }
+}
+function closeModal(){
+      setIsModalOpen(false)
+      setSelected(null)
+      setAge("")
+      setAvatar("")
+      setCoin("")
+      setGender("")
+      setYahoo("")
+      setLinkedIn("")
+      setName("")
+      setGrade("")
+      setRating("")
+      setTelegram("")
 }
 if(loading){
   return (
@@ -44,11 +122,222 @@ if(loading){
 
   return (
     <div>
-      <input
+      {isModalOpen ? <div
+      onClick={closeModal}
+      id="outer-modal"
+      className="fixed top-0 left-0 w-full h-full flex items-center z-40 justify-center transition-transform duration-300 scale-100 backdrop-blur bg-[black]/50"
+    >
+      <form
+      onSubmit={addStudent}
+      onClick={(e) => e.stopPropagation()}
+        id="form"
+        className="max-w-lg bg-white p-[20px] w-full rounded-xl mx-auto"
+      >
+        <div className="relative z-0 w-full mb-5 group">
+          <input
+            value={name}
+            onChange={(e) => setName(e.data.value)}
+            type="text"
+            name="floating_email"
+            className="block py-2.5 px-0 w-full text-sm text-heading bg-transparent border-0 border-b-2 border-default-medium appearance-none focus:outline-none focus:ring-0 focus:border-brand peer"
+            placeholder=" "
+            required
+          />
+          <label
+            htmlFor="floating_email"
+            className="absolute text-sm text-body duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-fg-brand peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
+          >
+            Full name
+          </label>
+        </div>
+
+        <div className="relative z-0 w-full mb-5 group">
+          <input
+            value={grade}
+            onChange={(e) => setGrade(e.target.value)}
+            type="number"
+            name="floating_password"
+            className="block py-2.5 px-0 w-full text-sm text-heading bg-transparent border-0 border-b-2 border-default-medium appearance-none focus:outline-none focus:ring-0 focus:border-brand peer"
+            placeholder=" "
+            required
+          />
+          <label
+            htmlFor="floating_password"
+            className="absolute text-sm text-body duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-fg-brand peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
+          >
+            Grade
+          </label>
+        </div>
+
+        <div className="relative z-0 w-full mb-5 group">
+          <input
+            value={linkedIn}
+            onChange={(e) => setLinkedIn(e.target.value)}
+            type="text"
+            name="repeat_password"
+            className="block py-2.5 px-0 w-full text-sm text-heading bg-transparent border-0 border-b-2 border-default-medium appearance-none focus:outline-none focus:ring-0 focus:border-brand peer"
+            placeholder=" "
+            required
+          />
+          <label
+            htmlFor="floating_repeat_password"
+            className="absolute text-sm text-body duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-fg-brand peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
+          >
+            LinkedIn
+          </label>
+        </div>
+
+        <div className="relative z-0 w-full mb-5 group">
+          <input
+            value={yahoo}
+            onChange={(e) => setYahoo(e.target.value)}
+            type="email"
+            name="repeat_password"
+            className="block py-2.5 px-0 w-full text-sm text-heading bg-transparent border-0 border-b-2 border-default-medium appearance-none focus:outline-none focus:ring-0 focus:border-brand peer"
+            placeholder=" "
+            required
+          />
+          <label
+            htmlFor="floating_repeat_password"
+            className="absolute text-sm text-body duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-fg-brand peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
+          >
+            Gmail
+          </label>
+        </div>
+
+        <div className="grid md:grid-cols-2 md:gap-6">
+          <div className="relative z-0 w-full mb-5 group">
+            <input
+              value={age}
+              onChange={(e) => setAge(e.target.value)}
+              type="number"
+              name="floating_first_name"
+              className="block py-2.5 px-0 w-full text-sm text-heading bg-transparent border-0 border-b-2 border-default-medium appearance-none focus:outline-none focus:ring-0 focus:border-brand peer"
+              placeholder=" "
+              required
+            />
+            <label
+              htmlFor="floating_first_name"
+              className="absolute text-sm text-body duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-fg-brand peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
+            >
+              Age
+            </label>
+          </div>
+
+          <div className="relative z-0 w-full mb-5 group">
+            <input
+            value={coin}
+              onChange={(e) => setCoin(e.target.value)} 
+              type="number"
+              name="floating_last_name"
+              className="block py-2.5 px-0 w-full text-sm text-heading bg-transparent border-0 border-b-2 border-default-medium appearance-none focus:outline-none focus:ring-0 focus:border-brand peer"
+              placeholder=" "
+              required
+            />
+            <label
+              htmlFor="floating_last_name"
+              className="absolute text-sm text-body duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-fg-brand peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
+            >
+              Coin
+            </label>
+          </div>
+        </div>
+
+        <div className="grid md:grid-cols-2 md:gap-6">
+          <div className="relative z-0 w-full mb-5 group">
+            <input
+              value={avatar}
+              onChange={(e) => setAvatar(e.target.value)}
+              type="text"
+              name="floating_phone"
+              className="block py-2.5 px-0 w-full text-sm text-heading bg-transparent border-0 border-b-2 border-default-medium appearance-none focus:outline-none focus:ring-0 focus:border-brand peer"
+              placeholder=" "
+              required
+            />
+            <label
+              htmlFor="floating_phone"
+              className="absolute text-sm text-body duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-fg-brand peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
+            >
+              Img URL
+            </label>
+          </div>
+
+          <div className="relative z-0 w-full mb-5 group">
+            <input
+              value={telegram}
+              onChange={(e) => setTelegram(e.target.value)}
+              type="text"
+              name="floating_company"
+              className="block py-2.5 px-0 w-full text-sm text-heading bg-transparent border-0 border-b-2 border-default-medium appearance-none focus:outline-none focus:ring-0 focus:border-brand peer"
+              placeholder=" "
+              required
+            />
+            <label
+              htmlFor="floating_company"
+              className="absolute text-sm text-body duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-fg-brand peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
+            >
+              Telegram nickname
+            </label>
+          </div>
+        </div>
+
+        <div className="relative flex gap-[30px] z-0 w-full mb-5 group">
+          <div className="relative z-0 w-[50%] mb-5 group">
+            <input
+              value={rating}
+              onChange={(e) => setRating(e.target.value)}
+              type="number"
+              name="floating_company"
+              className="block py-2.5 px-0 w-full text-sm text-heading bg-transparent border-0 border-b-2 border-default-medium appearance-none focus:outline-none focus:ring-0 focus:border-brand peer"
+              placeholder=" "
+              required
+            />
+            <label
+              htmlFor="floating_company"
+              className="absolute text-sm text-body duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-fg-brand peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
+            >
+              Rating
+            </label>
+          </div>
+
+          <div className="flex items-center mb-4">
+            <input
+              value={gender}
+              checked={(e) =>  setGender(e.target.value)}
+              id="default-checkbox"
+              type="checkbox"
+              className="w-4 h-4 border border-default-medium rounded-xs bg-neutral-secondary-medium focus:ring-2 focus:ring-brand-soft"
+            />
+            <label
+              htmlFor="default-checkbox"
+              className="select-none ms-2 text-sm font-medium text-heading"
+            >
+              Male ?
+            </label>
+          </div>
+        </div>
+
+        <button
+          type="submit"
+          className="text-white bg-brand box-border border border-transparent hover:bg-brand-strong bg-blue-700 rounded-xl focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none"
+        >
+          {selected ? "Edit Student" : "Add Student"}
+        </button>
+      </form>
+    </div> : ""}
+      <div className="flex gap-3">
+        <input
       onChange={(e) => setSearch(e.target.value)}
-      className="outline-none p-2 text-[20px] font-medium mx-10 my-5 rounded-[20px] bg-gray-800 text-gray-400 " 
+      className="outline-none p-2 text-[20px] font-medium ml-12 my-5 rounded-[10px] bg-gray-800 text-gray-400 " 
       type="search" 
-      placeholder="O'quvchilarni qidirish" />
+      placeholder="Search Students" />
+      <button
+        onClick={() => setIsModalOpen(true)}
+        className="outline-none p-2 text-[20px] font-medium  my-5 bg-gray-800 rounded-[10px] bg-gray-800 text-blue-500">
+          Add Student
+        </button>
+  
+      </div>
 
       <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
       {students.map((el) => (
@@ -199,8 +488,7 @@ if(loading){
 
           <div className="flex gap-3 mt-auto opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             <button
-              data-action="edit"
-              data-id={el.id}
+            onClick={() => editStudent(el.id)}
               className="flex-1 flex items-center justify-center gap-2 h-10 rounded-md bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-sm font-medium text-gray-800 dark:text-gray-200 transition"
             >
               <svg
@@ -239,6 +527,7 @@ if(loading){
       ))}
     </div>
     </div>
+    
   );
 };
 
