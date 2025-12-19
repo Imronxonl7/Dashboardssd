@@ -2,11 +2,9 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import useGet from "../../hooks/useGet";
 
 const StudentsPage = () => {
-  const [students, setStudents] = useState([]);
-  const [loading , setLoading] = useState(true)
-  const [search , setSearch] =useState("")
   const [isModalOpen , setIsModalOpen] = useState(false)
   const [name , setName] = useState("")
   const [coin , setCoin] = useState("")
@@ -20,20 +18,8 @@ const StudentsPage = () => {
   const [gender , setGender] = useState("")
   const [selected , setSelected ] = useState(null)
 
-async function getAllStudents() {
-      try {
-        const res = await axios.get(
-          `https://69243f273ad095fb84735a27.mockapi.io/students?search=${search}`
-        );
-        setStudents(res.data);
-        setLoading(false)
-      } catch (err) {
-        console.log(err);
-      }
-    }
-  useEffect(() => {
-    getAllStudents();
-  }, [search]);
+const {data:students , loading} = useGet("students")
+
   async function addStudent(e) {
 
     e.preventDefault()
@@ -325,25 +311,25 @@ if(loading){
         </button>
       </form>
     </div> : ""}
-      <div className="flex gap-3">
+      <div className="flex mt-15 gap-3">
         <input
       onChange={(e) => setSearch(e.target.value)}
-      className="outline-none p-2 text-[20px] font-medium ml-12 my-5 rounded-[10px] bg-gray-800 text-gray-400 " 
+      className="outline-none p-2 text-[20px] font-medium ml-12 my-5 rounded-[10px] border-blue-500  dark:border-gray-800 dark:hover:border-gray-800 border-1 dark:bg-gray-800 text-blue-500 dark:text-gray-400 " 
       type="search" 
       placeholder="Search Students" />
       <button
         onClick={() => setIsModalOpen(true)}
-        className="outline-none p-2 text-[20px] font-medium  my-5 bg-gray-800 rounded-[10px] bg-gray-800 text-blue-500">
+        className="outline-none p-2 text-[20px] font-medium  my-5  rounded-[10px] border-1 dark:hover:bg-gray-800 dark:hover:text-blue-500 dark:border-gray-800 dark:hover:border-gray-800 border-blue-500 hover:text-white hover:border-blue-500  hover:bg-blue-500 transition-all duration-400 dark:bg-gray-800 text-blue-500">
           Add Student
         </button>
   
       </div>
 
-      <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 ">
       {students.map((el) => (
         <div
           key={el.id}
-          className="student-card flex flex-col gap-6 rounded-xl border p-6 cursor-pointer transition-all duration-300 hover:shadow-xl hover:-translate-y-1 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 group"
+          className="student-card flex -z-10 flex-col gap-6 rounded-xl border p-6 cursor-pointer transition-all duration-300 hover:shadow-xl hover:-translate-y-1 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 group"
         >
           <div className="flex flex-col justify-between items-center text-center mb-4">
             <span className="relative flex size-10 shrink-0 overflow-hidden rounded-full h-20 w-20 mb-3 ring-4 ring-purple-100 dark:ring-purple-900">

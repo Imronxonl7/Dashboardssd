@@ -2,11 +2,10 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import useGet from "../../hooks/useGet";
 
 const TeachersPage = () => {
-  const [teachers, setTeachers] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [search, setSearch] = useState("");
+
   const [isModalOpen , setIsModalOpen] = useState(false)
   const [name , setName] = useState("")
   const [profession , setProfession] = useState("")
@@ -20,17 +19,7 @@ const TeachersPage = () => {
   const [gender , setGender] = useState("")
   const [selected , setSelected] = useState(null)
 
-  async function getAllTeachers() {
-    try {
-      let res = await axios.get(
-        `https://69243f273ad095fb84735a27.mockapi.io/teachers?search=${search}`
-      );
-      setTeachers(res.data);
-      setLoading(false);
-    } catch (err) {
-      console.log(err);
-    }
-  }
+ 
   async function addTeacher(e) {
 
     e.preventDefault()
@@ -63,9 +52,7 @@ const TeachersPage = () => {
       
     }
   }
-  useEffect(() => {
-    getAllTeachers();
-  }, [search]);
+  const {data:teachers , loading} = useGet("teachers")
 
   async function editTeacher(id) {
     setSelected(id)
@@ -330,24 +317,24 @@ const TeachersPage = () => {
       </form>
     </div> : "" }
 
-      <div className="flex gap-3">
+      <div className="flex mt-15 gap-3">
         <input
           onChange={(e) => setSearch(e.target.value)}
-          className="outline-none p-2 text-[20px] font-medium ml-12  my-5 rounded-[10px] bg-gray-800 text-gray-400 "
+          className="outline-none p-2 text-[20px] font-medium ml-12  my-5 rounded-[10px]  border-1 border-blue-500 dark:border-gray-800 dark:hover:border-gray-800 dark:bg-gray-800 text-blue-500 dark:text-gray-400 "
           type="search"
           placeholder="Search Teachers"
         />
         <button
         onClick={() => setIsModalOpen(true)}
-        className="outline-none p-2 text-[20px] font-medium  my-5 bg-gray-800 rounded-[10px] bg-gray-800 text-blue-500">
+        className="outline-none p-2 text-[20px] font-medium  my-5  rounded-[10px] border-1 hover:text-white dark:hover:bg-gray-800 dark:border-gray-800 dark:hover:border-gray-800   hover:border-blue-500 border-blue-500  hover:bg-blue-500 transition-all duration-400 dark:bg-gray-800 dark:hover:text-blue-500 text-blue-500">
           Add Teacher
         </button>
       </div>
-      <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <div className="container mx-auto -z-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {teachers.map((el) => (
           <div
             key={el.id}
-            className="text-card-foreground flex flex-col gap-6 rounded-xl border p-6 cursor-pointer transition-all duration-300 hover:shadow-xl hover:-translate-y-1 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 group"
+            className="text-card-foreground flex -z-10 flex-col gap-6 rounded-xl border p-6 cursor-pointer transition-all duration-300 hover:shadow-xl hover:-translate-y-1 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 group"
           >
             <div className="flex flex-col items-center text-center mb-4">
               <span className="relative flex size-10 shrink-0 overflow-hidden rounded-full h-20 w-20 mb-3 ring-4 ring-blue-100 dark:ring-blue-900">
