@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import useGet from "../../hooks/useGet";
+import useMutate from "../../hooks/useMutate";
 
 const StudentsPage = () => {
   const [isModalOpen , setIsModalOpen] = useState(false)
@@ -15,43 +16,63 @@ const StudentsPage = () => {
   const [avatar , setAvatar] = useState("")
   const [telegram , setTelegram] = useState("")
   const [rating , setRating] = useState("")
-  const [gender , setGender] = useState("")
   const [selected , setSelected ] = useState(null)
 
-const {data:students , loading} = useGet("students")
+const {data:students , loading , getAllData} = useGet("students")
+const {addMutate} = useMutate()
 
-  async function addStudent(e) {
 
-    e.preventDefault()
-    try{
-      if(selected){      
-        await axios.put(`https://69243f273ad095fb84735a27.mockapi.io/students/${selected}` , {name , avatar , gender , age , grade , telegram , yahoo , linkedIn , rating , coin })
-      toast.success("Siz o'quvchini tahrirladingiz")
-
-      }else{
-        await axios.post("https://69243f273ad095fb84735a27.mockapi.io/students" , {name , avatar , gender , age , grade , telegram , yahoo , linkedIn , rating , coin })
-              toast.success("Siz o'quvchi qo'shdingiz")
-
-      }
-      setIsModalOpen(false)
-      getAllStudents()
-      setSelected(null)
-      setAge("")
-      setAvatar("")
-      setCoin("")
-      setGender("")
-      setYahoo("")
-      setLinkedIn("")
-      setName("")
-      setGrade("")
-      setRating("")
-      setTelegram("")
-      
-    }catch(err){
-      console.log(err);
-      
+async function addStudent(e) {
+  e.preventDefault()
+  try {
+    if(selected){
+      await addMutate({url:"students" , payload:{name , avatar  , age , grade , telegram , yahoo , linkedIn , rating , coin } , method:"put" , id:selected })
+    getAllData()
+    isModalOpen(false)
+    toast.success("Siz o'quvchi tahrirladingiz")
+    }else{
+      await addMutate({url:"students" , payload:{name , avatar  , age , grade , telegram , yahoo , linkedIn , rating , coin } , method:"post" })
+    getAllData()
+    isModalOpen(false)
+    toast.success("Siz o'quvchi qo'shdingiz")
     }
+  } catch (error) {
+    console.log(error);
+    
   }
+}
+  // async function addStudent(e) {
+
+    // e.preventDefault()
+    // try{
+    //   if(){      
+    //     await axios.put(`https://69243f273ad095fb84735a27.mockapi.io/students/${selected}` , {name , avatar , gender , age , grade , telegram , yahoo , linkedIn , rating , coin })
+    //   toast.success("Siz o'quvchini tahrirladingiz")
+
+    //   }else{
+    //     await axios.post("https://69243f273ad095fb84735a27.mockapi.io/students" , {name , avatar , gender , age , grade , telegram , yahoo , linkedIn , rating , coin })
+    //           toast.success("Siz o'quvchi qo'shdingiz")
+
+    //   }
+      // setIsModalOpen(false)
+      // getAllStudents()
+      // setSelected(null)
+      // setAge("")
+      // setAvatar("")
+      // setCoin("")
+      // setGender("")
+      // setYahoo("")
+      // setLinkedIn("")
+      // setName("")
+      // setGrade("")
+      // setRating("")
+      // setTelegram("")
+      
+    // }catch(err){
+    //   console.log(err);
+      
+    // }
+//   }
   async function editStudent(id) {
     setSelected(id)
     setIsModalOpen(true)
@@ -60,7 +81,6 @@ const {data:students , loading} = useGet("students")
       setAge(res.data.age)
       setAvatar(res.data.avatar)
       setCoin(res.data.coin)
-      setGender(res.data.gender)
       setYahoo(res.data.yahoo)
       setLinkedIn(res.data.linkedin)
       setName(res.data.name)
@@ -73,14 +93,8 @@ const {data:students , loading} = useGet("students")
     }
   }
   async function deleteStudent(id) {
-  try{
-    await axios.delete(`https://69243f273ad095fb84735a27.mockapi.io/students/${id}`)
-    getAllStudents()
-    toast(`Siz ${id}-id li o'quvchini o'chirdingiz`)
-  }catch(err){
-    console.log(err);
-    
-  }
+  addMutate({url:"students" , id:id , method:"delete"})
+    getAllData()
 }
 function closeModal(){
       setIsModalOpen(false)
@@ -88,7 +102,6 @@ function closeModal(){
       setAge("")
       setAvatar("")
       setCoin("")
-      setGender("")
       setYahoo("")
       setLinkedIn("")
       setName("")
@@ -288,8 +301,6 @@ if(loading){
 
           <div className="flex items-center mb-4">
             <input
-              value={gender}
-              checked={(e) =>  setGender(e.target.value)}
               id="default-checkbox"
               type="checkbox"
               className="w-4 h-4 border border-default-medium rounded-xs bg-neutral-secondary-medium focus:ring-2 focus:ring-brand-soft"
@@ -329,7 +340,7 @@ if(loading){
       {students.map((el) => (
         <div
           key={el.id}
-          className="student-card flex -z-10 flex-col gap-6 rounded-xl border p-6 cursor-pointer transition-all duration-300 hover:shadow-xl hover:-translate-y-1 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 group"
+          className="student-card flex flex-col gap-6 rounded-xl border p-6 cursor-pointer transition-all duration-300 hover:shadow-xl hover:-translate-y-1 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 group"
         >
           <div className="flex flex-col justify-between items-center text-center mb-4">
             <span className="relative flex size-10 shrink-0 overflow-hidden rounded-full h-20 w-20 mb-3 ring-4 ring-purple-100 dark:ring-purple-900">

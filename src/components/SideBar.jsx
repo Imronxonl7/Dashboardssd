@@ -15,7 +15,7 @@ const SideBar = ({openSideBar ,setOpenSideBar}) => {
     toast.warn("Siz tizimdan chiqib ketdingiz")
   }
   return (
-    <aside className={`fixed ${openSideBar ? "max-w-[270px]" : "max-w-[100px]"} duration-400 top-0 left-0 flex flex-col bg-white gap-5 h-screen border-x-1 dark:bg-gray-800  w-full p-5`}>
+    <aside className={`fixed ${openSideBar ? "max-w-[270px]" : "max-w-[100px]"} duration-400 top-0 left-0 z-20 flex flex-col bg-white gap-5 h-screen border-x-1 dark:bg-gray-800  w-full p-5`}>
      <div className=' flex justify-between items-center'>
        <Link to={"/teachers"} className=' text-[34px] text-gray-800 dark:text-gray-400 '>Logo</Link>
       <button

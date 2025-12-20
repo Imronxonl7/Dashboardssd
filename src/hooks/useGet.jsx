@@ -17,7 +17,7 @@ const useGet = (url) => {
 useEffect(() => {
         getAllData()      
     } , [url])
-  return {data , loading}
+  return {data , loading , getAllData}
 }
 
 export default useGet

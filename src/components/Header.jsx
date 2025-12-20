@@ -12,7 +12,7 @@ const Header = () => {
         }
     } , [dark])
   return (
-    <header className='fixed top-0  w-full flex border-y-1 justify-end px-[30px] bg-white dark:bg-gray-700 py-[15px]'>
+    <header className='fixed top-0 z-10  w-full flex border-y-1 justify-end px-[30px] bg-white dark:bg-gray-700 py-[15px]'>
                 <div className='flex items-center gap-[20px]'>
                     <NavLink to={"/"} className='text-[24px] text-gray-800 font-medium dark:text-gray-400'>
                     Profile
